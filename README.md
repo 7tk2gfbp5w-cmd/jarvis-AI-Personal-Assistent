@@ -10,6 +10,7 @@ A local AI assistant built using Python, Flask, Ollama and JavaScript.
 - Modern Responsive UI
 - Conversation Management
 - Typing Animation
+- chat history
 - Voice Assistant (Work in Progress)
 
 ## Technologies
@@ -20,7 +21,7 @@ A local AI assistant built using Python, Flask, Ollama and JavaScript.
 - HTML
 - CSS
 - Ollama
-- Faster Whisper
+- Faster Whisper (under construction)
 
 ## How to Run
 
