@@ -440,8 +440,8 @@ micBtn.onclick = () => {
         <div class="bubble">
             <h3>🎤 Voice Assistant</h3>
             <p>
-                Voice mode is currently under development and will be available in the next update.
-                For now, you can chat with Jarvis by typing your message below.
+                Voice mode is currently under development and will be available in the next update 2.O .
+                For now, you can chat with Jarvis by typing your message below. Thanks for your patiance and support 
             </p>
         </div>
     `;
