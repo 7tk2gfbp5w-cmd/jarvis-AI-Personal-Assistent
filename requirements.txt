@@ -1,0 +1,12 @@
+openai
+ollama
+faster-whisper
+sounddevice
+soundfile
+numpy
+scipy
+openwakeword
+piper-tts
+requests
+python-dotenv
+rich

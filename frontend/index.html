@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Jarvis AI</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- Sidebar -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+
+            <div class="logo-circle">
+
+                🤖
+
+            </div>
+
+            <div>
+
+                <h2>Jarvis</h2>
+
+                <p>Your Local AI</p>
+
+            </div>
+
+        </div>
+
+        <button id="new-chat">
+
+            + New Chat
+
+        </button>
+
+        <div class="history" id="history-list">
+
+            <div class="history-title">
+
+                Recent Chats
+
+            </div>
+
+            <div class="history-item active">
+
+                Welcome
+
+            </div>
+
+        </div>
+
+        <div class="bottom">
+
+            <div class="status">
+                <span class="green-dot"></span>
+                <span id="backend-status">Checking Backend...</span>
+            </div>
+
+            <div class="version">
+
+                Version 1.0
+
+            </div>
+
+        </div>
+
+    </aside>
+
+    <!-- Main -->
+
+    <main class="main">
+
+        <!-- Header -->
+
+        <header class="topbar">
+
+            <div>
+
+                <h1>Jarvis AI</h1>
+
+                <p>Your Intelligent Local Assistant</p>
+
+            </div>
+
+            <button id="theme-btn">
+
+                🌙
+
+            </button>
+
+        </header>
+
+        <!-- Chat -->
+
+        <section
+            id="chat-box"
+            class="chat-box">
+
+            <div class="message bot">
+
+                <div class="avatar">
+
+                    🤖
+
+                </div>
+
+                <div class="bubble">
+
+                    <h3>Hello 👋</h3>
+
+                    <p>
+
+                        I am Jarvis.
+
+                        Ask me anything.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- Thinking -->
+
+        <div id="thinking"
+             class="thinking">
+
+            <div class="avatar">
+
+                🤖
+
+            </div>
+
+            <div class="bubble thinking-bubble">
+
+                <span></span>
+
+                <span></span>
+
+                <span></span>
+
+            </div>
+
+        </div>
+
+        <!-- Input -->
+
+        <footer class="input-area">
+
+            <button
+                type="button"
+                id="mic-btn"
+                title="Voice">
+
+                🎤
+
+            </button>
+
+            <input
+
+                id="user-input"
+
+                type="text"
+
+                placeholder="Message Jarvis..."
+
+                autocomplete="off"
+
+            >
+
+            <button
+                type="button"
+
+                id="send-btn"
+
+                title="Send">
+
+                ➤
+
+            </button>
+
+        </footer>
+
+    </main>
+
+</div>
+
+<script type="module" src="JS/app.js"></script>
+
+<div id="toast-container"></div>
+
+</body>
+
+</html>
