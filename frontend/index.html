@@ -1,221 +1,1160 @@
-<!DOCTYPE html>
-<html lang="en">
+/* ==========================================
+   JARVIS AI
+   PREMIUM UI
+   PART 1
+========================================== */
 
-<head>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
 
-    <meta charset="UTF-8">
+:root{
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    --bg:#0b1220;
+    --panel:#111827;
+    --panel2:#1a2332;
 
-    <title>Jarvis AI</title>
+    --blue:#3b82f6;
+    --blue2:#2563eb;
 
-    <link rel="stylesheet" href="style.css">
+    --text:#ffffff;
+    --text2:#aeb6c5;
 
-    <link rel="preconnect"
-          href="https://fonts.googleapis.com">
+    --border:rgba(255,255,255,.08);
 
-    <link rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossorigin>
+}
 
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-          rel="stylesheet">
+body{
 
-</head>
+    background:linear-gradient(
+        135deg,
+        #09111f,
+        #101827,
+        #151d2d
+    );
+    background-size: 300% 300%;
+    animation: gradientMove 18s ease infinite;
 
-<body>
+    color:var(--text);
 
-<div class="app">
+    overflow:hidden;
 
-    <!-- Sidebar -->
+}
 
-    <aside class="sidebar">
+/* APP */
 
-        <div class="logo">
+.app{
 
-            <div class="logo-circle">
+    display:flex;
 
-                🤖
+    height:100vh;
 
-            </div>
+}
 
-            <div>
+/* SIDEBAR */
 
-                <h2>Jarvis</h2>
+.sidebar{
 
-                <p>Your Local AI</p>
+    width:290px;
 
-            </div>
+    position:relative;
 
-        </div>
+    z-index:1000;
 
-        <button id="new-chat">
+    background:rgba(17,24,39,.95);
 
-            + New Chat
+    backdrop-filter:blur(20px);
 
-        </button>
+    border-right:1px solid var(--border);
 
-        <div class="history" id="history-list">
+    display:flex;
 
-            <div class="history-title">
+    flex-direction:column;
 
-                Recent Chats
+    padding:25px;
 
-            </div>
+}
 
-            <div class="history-item active" data-chat-id="welcome">
-                <span class="chat-title">Welcome</span>
-                <button class="chat-menu-btn" title="More">⋮</button>
-                <div class="chat-menu">
-                    <button class="delete-chat-item">🗑 Delete</button>
-                </div>
-            </div>
+/* LOGO */
 
-        </div>
+.logo{
 
-        <div class="bottom">
+    display:flex;
 
-            <div class="status">
-                <span class="green-dot"></span>
-                <span id="backend-status">Ollama connected 🚀 </span>
-            </div>
+    align-items:center;
 
-            <div class="version">
+    gap:15px;
 
-                Version 1.0
+    margin-bottom:35px;
 
-            </div>
+}
 
-        </div>
+.logo-circle{
 
-    </aside>
+    width:58px;
 
-    <!-- Main -->
+    height:58px;
 
-    <main class="main">
+    border-radius:18px;
 
-        <!-- Header -->
+    display:flex;
 
-        <header class="topbar">
+    align-items:center;
 
-            <div>
+    justify-content:center;
 
-                <h1>Jarvis AI</h1>
+    font-size:28px;
 
-                <p>Your Intelligent Local Assistant</p>
+    background:linear-gradient(
+        135deg,
+        var(--blue),
+        #60a5fa
+    );
 
-            </div>
+    box-shadow:
+        0 0 25px rgba(59,130,246,.35);
+    transition: transform .35s ease;
+}
 
-            <button id="theme-btn">
+.logo-circle:hover{
+    transform: rotate(12deg) scale(1.08);
+}
 
-                🌙
+.logo h2{
 
-            </button>
+    font-size:24px;
 
-        </header>
+}
 
-        <!-- Chat -->
+.logo p{
 
-        <section
-            id="chat-box"
-            class="chat-box">
+    font-size:13px;
 
-            <div class="message bot">
+    color:var(--text2);
 
-                <div class="avatar">
+}
 
-                    🤖
+/* BUTTON */
 
-                </div>
+#new-chat{
 
-                <div class="bubble">
+    width:100%;
 
-                    <h3>Hello 👋</h3>
+    padding:16px;
 
-                    <p>
+    border:none;
 
-                        I am Jarvis.
+    border-radius:16px;
 
-                        Ask me anything.
+    cursor:pointer;
 
-                    </p>
+    background:linear-gradient(
+        135deg,
+        var(--blue),
+        var(--blue2)
+    );
 
-                </div>
+    color:white;
 
-            </div>
+    font-size:16px;
 
-        </section>
+    font-weight:600;
 
-        <!-- Thinking -->
+    transition:.3s;
 
-        <div id="thinking"
-             class="thinking">
+}
 
-            <div class="avatar">
+#new-chat:hover{
 
-                🤖
+    transform:translateY(-2px);
 
-            </div>
+    box-shadow:
+        0 10px 30px rgba(37,99,235,.35);
 
-            <div class="bubble thinking-bubble">
+}
 
-                <span></span>
+/* HISTORY */
 
-                <span></span>
+.history{
 
-                <span></span>
+    margin-top:35px;
 
-            </div>
+    flex:1;
 
-        </div>
+}
 
-        <!-- Input -->
+.history-title{
 
-        <footer class="input-area">
+    color:var(--text2);
 
-            <button
-                type="button"
-                id="mic-btn"
-                title="Voice">
+    font-size:14px;
 
-                🎤
+    margin-bottom:18px;
 
-            </button>
+}
 
-            <input
+.history-item{
 
-                id="user-input"
+    padding:14px;
 
-                type="text"
+    margin-bottom:10px;
 
-                placeholder="Message Jarvis..."
+    border-radius:14px;
 
-                autocomplete="off"
+    cursor:pointer;
 
-            >
+    background:transparent;
 
-            <button
-                type="button"
+    transition:.25s;
 
-                id="send-btn"
+}
 
-                title="Send">
+.history-item:hover{
 
-                ➤
+    background:#1f2937;
+    transform:translateX(6px);
 
-            </button>
+}
 
-        </footer>
+.history-item.active{
 
-    </main>
+    background:#1f2937;
 
-</div>
+}
 
-<script src="script.js"></script>
+/* FOOTER */
 
-<div id="toast-container"></div>
-<div id="menu-overlay"></div>
-</body>
+.bottom{
 
-</html>
+    border-top:1px solid var(--border);
+
+    padding-top:20px;
+
+}
+
+.status{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    font-size:14px;
+
+}
+
+.green-dot{
+
+    width:10px;
+
+    height:10px;
+
+    border-radius:50%;
+
+    background:#22c55e;
+
+    box-shadow:0 0 15px #22c55e;
+
+}
+
+.version{
+
+    margin-top:12px;
+
+    color:var(--text2);
+
+    font-size:13px;
+
+}
+
+/* MAIN */
+
+.main{
+
+    flex:1;
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+/* ==========================================
+   PART 2.2
+   TOPBAR + CHAT
+========================================== */
+
+/* TOPBAR */
+
+.topbar{
+
+    height:80px;
+
+    padding:0 35px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    border-bottom:1px solid var(--border);
+
+    background:rgba(17,24,39,.65);
+
+    backdrop-filter:blur(20px);
+
+}
+
+.topbar h1{
+
+    font-size:28px;
+
+    font-weight:700;
+
+}
+
+.topbar p{
+
+    color:var(--text2);
+
+    margin-top:3px;
+
+    font-size:14px;
+
+}
+
+/* Theme Button */
+
+#theme-btn{
+
+    width:48px;
+
+    height:48px;
+
+    border:none;
+
+    border-radius:14px;
+
+    background:#1f2937;
+
+    color:white;
+
+    cursor:pointer;
+
+    font-size:20px;
+
+    transition:.3s;
+
+}
+
+#theme-btn:hover{
+
+    transform:rotate(15deg);
+
+    background:var(--blue);
+
+}
+
+/* CHAT AREA */
+
+.chat-box{
+
+    flex:1;
+
+    overflow-y:auto;
+
+    padding:35px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:25px;
+
+    scroll-behavior:smooth;
+    scroll-padding-bottom: 30px;
+
+}
+
+/* Messages */
+
+.message{
+
+    display:flex;
+
+    gap:18px;
+
+    animation: messageSlide .45s cubic-bezier(.2,.8,.2,1);
+    perspective: 1000px;
+}
+
+/* Bot */
+
+.bot{
+
+    justify-content:flex-start;
+
+}
+
+/* User */
+
+.user{
+
+    justify-content:flex-end;
+
+}
+
+/* Avatar */
+
+.avatar{
+
+    width:52px;
+
+    height:52px;
+
+    border-radius:50%;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    background:linear-gradient(
+        135deg,
+        var(--blue),
+        #60a5fa
+    );
+
+    font-size:22px;
+
+    flex-shrink:0;
+
+}
+
+/* User Avatar */
+
+.user .avatar{
+
+    background:linear-gradient(
+        135deg,
+        #10b981,
+        #34d399
+    );
+
+}
+
+/* Bubble */
+
+.bubble{
+
+    max-width:72%;
+
+    background:#1a2332;
+
+    border:1px solid rgba(255,255,255,.05);
+
+    border-radius:22px;
+
+    padding:18px 22px;
+
+    box-shadow:
+        0 8px 25px rgba(0,0,0,.18);
+    backdrop-filter: blur(18px);
+    transition: transform .25s ease, box-shadow .25s ease;
+    position: relative;
+    overflow: hidden;
+    animation: bubbleFloat 5s ease-in-out infinite;
+}
+
+.bubble::before{
+    content:"";
+    position:absolute;
+    top:0;
+    left:-150%;
+    width:60%;
+    height:100%;
+    background:linear-gradient(90deg,transparent,rgba(255,255,255,.08),transparent);
+    transform:skewX(-20deg);
+    transition:left .8s ease;
+}
+
+.bubble:hover::before{
+    left:180%;
+}
+
+/* User Bubble */
+
+.user .bubble{
+    animation-delay: .8s;
+    background:linear-gradient(
+        135deg,
+        var(--blue),
+        var(--blue2)
+    );
+
+}
+
+/* Bubble Text */
+
+.bubble h3{
+
+    margin-bottom:8px;
+
+}
+
+.bubble p{
+
+    line-height:1.8;
+
+    color:#e5e7eb;
+
+}
+/* ==========================================
+   PART 2.3
+   INPUT AREA + THINKING
+========================================== */
+
+/* Input Area */
+
+.input-area{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+    padding:25px 30px;
+
+    border-top:1px solid rgba(255,255,255,.08);
+
+    background:rgba(17,24,39,.75);
+
+    backdrop-filter:blur(20px);
+
+}
+
+/* Text Box */
+
+#user-input{
+
+    flex:1;
+
+    background:#1a2332;
+
+    border:1px solid rgba(255,255,255,.08);
+
+    outline:none;
+
+    color:white;
+
+    padding:18px 22px;
+
+    border-radius:18px;
+
+    font-size:16px;
+
+    transition:.3s;
+
+}
+
+#user-input::placeholder{
+
+    color:#8b96a9;
+
+}
+
+#user-input:focus{
+
+    border-color:#3b82f6;
+
+    box-shadow:0 0 20px rgba(59,130,246,.25);
+    transform: translateY(-2px);
+}
+
+/* Buttons */
+
+#mic-btn,
+#send-btn{
+
+    width:60px;
+
+    height:60px;
+
+    border:none;
+
+    border-radius:50%;
+
+    cursor:pointer;
+
+    font-size:24px;
+
+    transition:.3s;
+
+}
+
+/* Microphone */
+
+#mic-btn{
+
+    background:#1f2937;
+
+    color:white;
+
+}
+
+#mic-btn:hover{
+
+    transform:scale(1.08);
+
+    background:#374151;
+
+}
+
+/* Send */
+
+#send-btn{
+
+    background:linear-gradient(
+        135deg,
+        #2563eb,
+        #3b82f6
+    );
+
+    color:white;
+
+    box-shadow:0 10px 25px rgba(37,99,235,.35);
+
+}
+
+#send-btn:hover{
+
+    transform:translateY(-3px) scale(1.05);
+    box-shadow:0 15px 40px rgba(37,99,235,.45);
+
+}
+
+/* Thinking */
+
+.thinking{
+
+    display:none;
+
+    align-items:center;
+
+    gap:18px;
+
+    padding:0 35px 20px;
+
+}
+
+/* Thinking Bubble */
+
+.thinking-bubble{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    width:85px;
+
+    justify-content:center;
+
+}
+
+.thinking-bubble span{
+
+    width:10px;
+
+    height:10px;
+
+    background:#60a5fa;
+
+    border-radius:50%;
+
+    animation:typing 1.2s infinite;
+
+}
+
+.thinking-bubble span:nth-child(2){
+
+    animation-delay:.2s;
+
+}
+
+.thinking-bubble span:nth-child(3){
+
+    animation-delay:.4s;
+
+}
+
+/* Animations */
+
+@keyframes typing{
+
+    0%{
+
+        transform:translateY(0);
+
+        opacity:.4;
+
+    }
+
+    50%{
+
+        transform:translateY(-8px);
+
+        opacity:1;
+
+    }
+
+    100%{
+
+        transform:translateY(0);
+
+        opacity:.4;
+
+    }
+
+}
+
+@keyframes fadeUp{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(20px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+/* ==========================================
+   PART 2.4
+   RESPONSIVE + POLISH
+========================================== */
+
+/* Smooth Scroll */
+
+html{
+    scroll-behavior:smooth;
+}
+
+/* Scrollbar */
+
+::-webkit-scrollbar{
+    width:8px;
+}
+
+::-webkit-scrollbar-track{
+    background:#101827;
+}
+
+::-webkit-scrollbar-thumb{
+    background:#3b82f6;
+    border-radius:20px;
+}
+
+::-webkit-scrollbar-thumb:hover{
+    background:#60a5fa;
+}
+
+/* Logo Animation */
+
+.logo-circle{
+
+    animation:glow 3s infinite;
+
+}
+
+@keyframes glow{
+
+    0%{
+
+        box-shadow:0 0 10px rgba(59,130,246,.2);
+
+    }
+
+    50%{
+
+        box-shadow:
+            0 0 25px rgba(59,130,246,.7),
+            0 0 45px rgba(96,165,250,.5);
+
+    }
+
+    100%{
+
+        box-shadow:0 0 10px rgba(59,130,246,.2);
+
+    }
+
+}
+
+/* Bubble Hover */
+
+.bubble{
+
+    transition:.25s;
+
+}
+
+.bubble:hover{
+    transform:translateY(-4px) scale(1.01);
+    box-shadow:0 18px 45px rgba(59,130,246,.18);
+}
+
+/* Button Hover */
+
+button{
+
+    transition:.25s;
+
+}
+
+button:active{
+
+    transform: scale(.94) rotate(-2deg);
+
+}
+
+/* Input Hover */
+
+#user-input:hover{
+
+    border-color:#3b82f6;
+
+}
+
+/* Selection */
+
+::selection{
+
+    background:#2563eb;
+    color:white;
+
+}
+
+/* Responsive */
+
+@media(max-width:1000px){
+
+.sidebar{
+
+    width:230px;
+
+}
+
+}
+
+@media(max-width:850px){
+
+.sidebar{
+
+    display:none;
+
+}
+
+.main{
+
+    width:100%;
+
+}
+
+.chat-box{
+
+    padding:20px;
+
+}
+
+}
+
+@media(max-width:650px){
+
+.topbar{
+
+    padding:18px;
+
+}
+
+.topbar h1{
+
+    font-size:22px;
+
+}
+
+.topbar p{
+
+    display:none;
+
+}
+
+.input-area{
+
+    padding:15px;
+
+}
+
+#user-input{
+
+    font-size:15px;
+
+    padding:15px;
+
+}
+
+#mic-btn,
+#send-btn{
+
+    width:52px;
+    height:52px;
+
+}
+
+.bubble{
+
+    max-width:90%;
+
+}
+
+}
+
+/* Footer Shadow */
+
+.input-area{
+
+    box-shadow:
+        0 -10px 30px rgba(0,0,0,.2);
+
+}
+
+/* Glass Effect */
+
+.sidebar,
+.topbar,
+.input-area{
+
+    backdrop-filter:blur(25px);
+
+}
+
+/* Fade */
+
+.main{
+
+    animation:fadePage .5s ease;
+
+}
+
+@keyframes fadePage{
+
+    from{
+
+        opacity:0;
+
+    }
+
+    to{
+
+        opacity:1;
+
+    }
+
+}
+
+.avatar{
+    width:48px;
+    height:48px;
+    border-radius:50%;
+    overflow:hidden;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-shrink:0;
+    transition: transform .3s ease, box-shadow .3s ease;
+    box-shadow: 0 0 18px rgba(96,165,250,.25);
+}
+
+.avatar img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    border-radius:50%;
+}
+
+.avatar:hover{
+    transform: scale(1.08) rotate(4deg);
+    box-shadow: 0 0 30px rgba(96,165,250,.45);
+}
+
+.typing-loader{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    height:20px;
+}
+
+.typing-loader span{
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:#60a5fa;
+    animation:typingDots .8s infinite ease-in-out;
+}
+
+.typing-loader span:nth-child(2){
+    animation-delay:.15s;
+}
+
+.typing-loader span:nth-child(3){
+    animation-delay:.3s;
+}
+
+@keyframes typingDots{
+    0%,80%,100%{
+        transform:scale(.6);
+        opacity:.4;
+    }
+    40%{
+        transform:scale(1.2);
+        opacity:1;
+    }
+}
+
+@keyframes gradientMove{
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+}
+
+@keyframes messageSlide{
+    from{
+        opacity:0;
+        transform:translateY(20px) scale(.98);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0) scale(1);
+    }
+}
+
+@keyframes bubbleFloat{
+    0%,100%{
+        transform:translateY(0px);
+    }
+    50%{
+        transform:translateY(-2px);
+    }
+}
+/* ===========================
+   ADVANCED CHAT HISTORY
+=========================== */
+
+.history-item{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    position:relative;
+    gap:10px;
+}
+
+.chat-title{
+    flex:1;
+    overflow:hidden;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+    font-size:15px;
+}
+
+.chat-menu-btn{
+    width:28px;
+    height:28px;
+    border:none;
+    border-radius:8px;
+    background:transparent;
+    color:#b8c3d9;
+    font-size:18px;
+    cursor:pointer;
+    opacity:0;
+    transition:.25s;
+}
+
+.history-item:hover .chat-menu-btn{
+    opacity:1;
+}
+
+.chat-menu-btn:hover{
+    background:#2d3748;
+    color:white;
+}
+
+.chat-menu{
+    position:absolute;
+    top:42px;
+    right:8px;
+    width:160px;
+    background:#1b2434;
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:12px;
+    display:none;
+    overflow:hidden;
+    z-index:1002;
+    box-shadow:0 15px 40px rgba(0,0,0,.35);
+    animation:menuPop .18s ease;
+}
+
+.chat-menu.show{
+    display:block;
+}
+
+.chat-menu button{
+    width:100%;
+    padding:12px 16px;
+    border:none;
+    background:transparent;
+    color:white;
+    text-align:left;
+    cursor:pointer;
+    font-size:14px;
+}
+
+.chat-menu button:hover{
+    background:#ef4444;
+}
+
+#menu-overlay{
+    position:fixed;
+    inset:0;
+    display:none;
+    z-index:900;
+}
+
+#menu-overlay.show{
+    display:block;
+}
+
+@keyframes menuPop{
+    from{
+        opacity:0;
+        transform:translateY(-8px) scale(.95);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0) scale(1);
+    }
+}
