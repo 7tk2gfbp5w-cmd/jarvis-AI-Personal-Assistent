@@ -64,10 +64,12 @@
 
             </div>
 
-            <div class="history-item active">
-
-                Welcome
-
+            <div class="history-item active" data-chat-id="welcome">
+                <span class="chat-title">Welcome</span>
+                <button class="chat-menu-btn" title="More">⋮</button>
+                <div class="chat-menu">
+                    <button class="delete-chat-item">🗑 Delete</button>
+                </div>
             </div>
 
         </div>
@@ -76,7 +78,7 @@
 
             <div class="status">
                 <span class="green-dot"></span>
-                <span id="backend-status">Checking Backend...</span>
+                <span id="backend-status">Ollama connected 🚀 </span>
             </div>
 
             <div class="version">
@@ -210,10 +212,10 @@
 
 </div>
 
-<script src = "script.js"></script>
+<script src="script.js"></script>
 
 <div id="toast-container"></div>
-
+<div id="menu-overlay"></div>
 </body>
 
 </html>
