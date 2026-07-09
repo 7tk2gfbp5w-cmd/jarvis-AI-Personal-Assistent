@@ -11,50 +11,193 @@ const STORAGE_KEY = "jarvis_chat";
 
 const CHAT_LIST_KEY = "jarvis_chat_list";
 
-let currentChatId = Date.now().toString();
+const CURRENT_CHAT_ID_KEY = "jarvis_current_chat_id";
+
+function createChatId(){
+    if(globalThis.crypto && typeof globalThis.crypto.randomUUID === "function"){
+        return globalThis.crypto.randomUUID();
+    }
+
+    return `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+}
+
+let currentChatId = localStorage.getItem(CURRENT_CHAT_ID_KEY) || createChatId();
+
+function newChatMarkup(){
+    return `
+
+    <div class="message bot">
+
+        <div class="avatar">
+
+            🤖
+
+        </div>
+
+        <div class="bubble">
+
+            <h3>New Chat</h3>
+
+            <p>Hello! I'm Jarvis. How can I help you today?</p>
+
+        </div>
+
+    </div>
+
+    `;
+}
+
+function getStoredChats(){
+    try{
+        const chats = JSON.parse(localStorage.getItem(CHAT_LIST_KEY) || "[]");
+        let changed = false;
+
+        const normalized = chats.map(chat=>{
+            if(chat.id) return chat;
+
+            changed = true;
+            return {
+                ...chat,
+                id: createChatId()
+            };
+        });
+
+        if(changed){
+            saveStoredChats(normalized);
+        }
+
+        return normalized;
+    }catch(error){
+        saveStoredChats([]);
+        return [];
+    }
+}
+
+function saveStoredChats(chats){
+    localStorage.setItem(CHAT_LIST_KEY, JSON.stringify(chats.slice(0,10)));
+}
+
+function updateCurrentChatSnapshot(){
+    let chats = getStoredChats();
+    const active = chats.find(c => c.id === currentChatId);
+
+    if(!active) return;
+
+    active.html = chatBox.innerHTML;
+    active.time = Date.now();
+    saveStoredChats(chats);
+}
 
 function saveRecentChat(title){
-    let chats = JSON.parse(localStorage.getItem(CHAT_LIST_KEY) || "[]");
+    let chats = getStoredChats();
 
-    chats = chats.filter(chat => chat.title !== title);
+    const existing = chats.find(c => c.id === currentChatId);
+    if (existing) {
+        existing.title = title;
+        existing.html = chatBox.innerHTML;
+        existing.time = Date.now();
+    } else {
+        chats.unshift({
+            id: currentChatId,
+            title,
+            html: chatBox.innerHTML,
+            time: Date.now()
+        });
+    }
 
-    chats.unshift({
-        title,
-        html: chatBox.innerHTML,
-        time: Date.now()
-    });
-
-    localStorage.setItem(CHAT_LIST_KEY, JSON.stringify(chats.slice(0,10)));
+    saveStoredChats(chats);
     renderRecentChats();
 }
 
 function renderRecentChats(){
     const history = document.querySelector(".history");
-    const chats = JSON.parse(localStorage.getItem(CHAT_LIST_KEY) || "[]");
+    let chats = getStoredChats();
 
     history.innerHTML = '<div class="history-title">Recent Chats</div>';
 
-    chats.forEach(chat=>{
+    chats.forEach((chat)=>{
         const item = document.createElement("div");
         item.className = "history-item";
-        item.textContent = chat.title;
-        item.onclick = ()=>{
+
+        item.innerHTML = `
+            <span class="chat-title"></span>
+            <button class="chat-menu-btn">⋮</button>
+            <div class="chat-menu">
+                <button class="delete-chat-item">🗑 Delete</button>
+            </div>`;
+
+        item.querySelector(".chat-title").textContent = chat.title;
+
+        item.querySelector(".chat-title").onclick = ()=>{
             chatBox.innerHTML = chat.html;
+            currentChatId = chat.id;
             saveChat();
         };
+
+        const menu = item.querySelector(".chat-menu");
+        const overlay = document.getElementById("menu-overlay");
+        menu.style.display = "none";
+
+        item.querySelector(".chat-menu-btn").onclick = (e)=>{
+            e.stopPropagation();
+            document.querySelectorAll(".chat-menu").forEach(m=>{
+                m.classList.remove("show");
+                m.style.display = "none";
+            });
+            menu.style.display = "block";
+            menu.classList.add("show");
+            if(overlay) overlay.classList.add("show");
+        };
+
+        item.querySelector(".delete-chat-item").onclick = (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+
+            let chats = getStoredChats();
+            chats = chats.filter(c => c.id !== chat.id);
+            saveStoredChats(chats);
+
+            if(overlay) overlay.classList.remove("show");
+
+            if(chat.id === currentChatId){
+                currentChatId = createChatId();
+                chatBox.innerHTML = newChatMarkup();
+                saveChat();
+            }
+
+            renderRecentChats();
+        };
+
         history.appendChild(item);
     });
+
+    const overlay = document.getElementById("menu-overlay");
+    if(overlay){
+        overlay.onclick = ()=>{
+            document.querySelectorAll(".chat-menu").forEach(m=>{
+                m.classList.remove("show");
+                m.style.display = "none";
+            });
+            overlay.classList.remove("show");
+        };
+    }
 }
+
 
 function saveChat(){
     localStorage.setItem(STORAGE_KEY, chatBox.innerHTML);
+    localStorage.setItem(CURRENT_CHAT_ID_KEY, currentChatId);
 }
 
 function loadChat(){
+    currentChatId = localStorage.getItem(CURRENT_CHAT_ID_KEY) || currentChatId;
+
     const saved = localStorage.getItem(STORAGE_KEY);
     if(saved){
         chatBox.innerHTML = saved;
         chatBox.scrollTop = chatBox.scrollHeight;
+    }else{
+        saveChat();
     }
 }
 
@@ -77,7 +220,7 @@ function addMessage(text, sender){
         </div>
 
         <div class="avatar">
-            <img src="PHOTO-USER.jpeg" alt="User Avatar">
+           😊
         </div>
 
         `;
@@ -103,10 +246,16 @@ function addMessage(text, sender){
     chatBox.appendChild(div);
 
     chatBox.scrollTop=chatBox.scrollHeight;
+
+    updateCurrentChatSnapshot();
     saveChat();
     if(sender === "user"){
-        const title = text.length > 30 ? text.substring(0,30) + "..." : text;
-        saveRecentChat(title);
+        if(chatBox.querySelectorAll(".message.user").length === 1){
+            const title = text.length > 30 ? text.substring(0,30) + "..." : text;
+            saveRecentChat(title);
+        }else{
+            saveChat();
+        }
     }
 }
 
@@ -149,6 +298,7 @@ async function typeMessage(text){
         await new Promise(resolve => setTimeout(resolve, 15));
 
     }
+    updateCurrentChatSnapshot();
     saveChat();
 }
 
@@ -201,8 +351,8 @@ async function sendMessage(message=null){
         if(chatId === currentChatId){
             typeMessage(data.reply);
         }else{
-            let chats = JSON.parse(localStorage.getItem(CHAT_LIST_KEY) || "[]");
-            const index = chats.findIndex(c => c.title === (message.length > 30 ? message.substring(0,30) + "..." : message));
+            let chats = getStoredChats();
+            const index = chats.findIndex(c => c.id === chatId);
             if(index !== -1){
                 const temp = document.createElement("div");
                 temp.innerHTML = chats[index].html;
@@ -213,7 +363,8 @@ async function sendMessage(message=null){
                 <div class="bubble"><p>${data.reply}</p></div>`;
                 temp.appendChild(reply);
                 chats[index].html = temp.innerHTML;
-                localStorage.setItem(CHAT_LIST_KEY, JSON.stringify(chats));
+                chats[index].time = Date.now();
+                saveStoredChats(chats);
             }
         }
 
@@ -307,31 +458,12 @@ micBtn.onclick = () => {
 
 document.getElementById("new-chat").onclick=()=>{
 
-    currentChatId = Date.now().toString();
+    currentChatId = createChatId();
 
-    chatBox.innerHTML=`
-
-    <div class="message bot">
-
-        <div class="avatar">
-
-            🤖
-
-        </div>
-
-        <div class="bubble">
-
-            <h3>New Chat</h3>
-
-            <p>Hello! I'm Jarvis. How can I help you today?</p>
-
-        </div>
-
-    </div>
-
-    `;
-
+    chatBox.innerHTML = newChatMarkup();
+    saveChat();
 };
+
 
 // =======================
 // THEME
